@@ -21,17 +21,17 @@ class _TelainicialState extends State<Telainicial> {
             accountName: Text('Emanuel', style: TextStyle(fontSize: 20),), 
             accountEmail: Text('emanuel@gmail.com'),
             ),
-            ListTile(
-              title: 
-              Text('Logout'),
-              ),
-            
+            FloatingActionButton(onPressed: (){
+            },
+            child: Icon(Icons.logout),
+            )
         ],)
       ),
       body: Stack(children: [
-        Column(
+        Row(
           children: [
-            Center(
+            Padding(
+              padding: EdgeInsets.only(top: 300, left: 50),
               child: Text('Bem-Vindo a Tela Inicial!', style: TextStyle(fontSize: 25))
             )
           ],
