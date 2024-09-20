@@ -86,7 +86,9 @@ class _MyHomePageState extends State<MyHomePage> {
                             border: OutlineInputBorder(
                               borderRadius: 
                               BorderRadius.all(Radius.circular(10)),
-                            )
+                            ),
+                            icon: Icon(Icons.email)
+
                           ),
                         ),
                       ),
@@ -110,7 +112,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             border: OutlineInputBorder(
                               borderRadius: 
                               BorderRadius.all(Radius.circular(10)),
-                            )
+                            ),
+                            icon: Icon(Icons.lock)
                           ),
                         ),
                       ),
