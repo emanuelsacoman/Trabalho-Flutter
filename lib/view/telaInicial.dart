@@ -18,10 +18,11 @@ class _TelainicialState extends State<Telainicial> {
       drawer: Drawer(
         child: Column(children: [
           UserAccountsDrawerHeader(
-            accountName: Text('Emanuel', style: TextStyle(fontSize: 20),), 
+            accountName: Text('Emanueldsadas', style: TextStyle(fontSize: 20),), 
             accountEmail: Text('emanuel@gmail.com'),
             ),
-            FloatingActionButton(onPressed: (){
+            FloatingActionButton(onPressed: () async{
+              Navigator.pushNamed(context, '/');
             },
             child: Icon(Icons.logout),
             )

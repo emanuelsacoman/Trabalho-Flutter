@@ -1,8 +1,22 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto/models/Login.dart';
+import 'package:projeto/services/authentication_service.dart';
+import 'package:projeto/view/forgot_password.dart';
+import 'package:projeto/view/home_page.dart';
+import 'package:projeto/view/login.dart';
+import 'package:projeto/view/register.dart';
 import 'package:projeto/view/telaInicial.dart';
 
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+import 'package:projeto/widgets/snack_bar_widget.dart';
+import 'firebase_options.dart';
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -18,9 +32,11 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: MyHomePage(),
+      home: const MyHomePage(),
       routes: {
         '/telaInicial': (context) => Telainicial(),
+        '/register': (context) => Register(),
+        '/forgotPassword': (context) => ForgotPassword(),
       }
     );
   }
@@ -35,115 +51,18 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final _formKey = GlobalKey<FormState>();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-
+  
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a 
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text("Login"),
-      ),
-      body: Column(
-            children: [
-              Center(
-                heightFactor: 5,
-                child: Text(
-                  'Login',
-                  textDirection: TextDirection.ltr,
-                  style: TextStyle(
-                    fontSize: 32,
-                  color: Colors.black,
-                  )
-                ),
-                
-              ),
-              Center(
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(12),
-                        child: TextFormField(
-                          controller: _emailController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Campo obrigatório!';
-                            }
-                            return null;
-                          },
-
-                          onChanged: (value) {
-                            print(_emailController.text);
-                          },
-
-                          decoration: InputDecoration(
-                            label: Text('Email'),
-                            border: OutlineInputBorder(
-                              borderRadius: 
-                              BorderRadius.all(Radius.circular(10)),
-                            ),
-                            icon: Icon(Icons.email)
-
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(12),
-                        child: TextFormField(
-                          controller: _passwordController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Campo obrigatório!';
-                            }
-                            return null;
-                          },
-
-                          onChanged: (value) {
-                            print(_passwordController.text);
-                          },
-
-                          decoration: InputDecoration(
-                            label: Text('Senha'),
-                            border: OutlineInputBorder(
-                              borderRadius: 
-                              BorderRadius.all(Radius.circular(10)),
-                            ),
-                            icon: Icon(Icons.lock)
-                          ),
-                        ),
-                      ),
-                      ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor: WidgetStateProperty.all(Color.fromARGB(255, 180, 255, 235)),
-                        ),
-                        onPressed: () async{
-                          if (_formKey.currentState!.validate()) {
-                            String email = _emailController.text;
-                            String password = _passwordController.text;
-
-                            
-                              Navigator.pushNamed(context, '/telaInicial');
-
-                            
-                          }
-                        }, 
-                        child: 
-                          Text('Entrar'),
-                        
-                        )
-                    ],
-                    
-                  ),
-                  
-                )
-              )
-            ]
-          ),
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.userChanges(),
+      builder: (context, snapshot){
+        if(snapshot.hasData){
+          return HomePage(user: snapshot.data!);
+        }else {
+          return LoginPage();
+        }
+      }
     );
   }
 }
