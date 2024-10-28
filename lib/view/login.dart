@@ -17,7 +17,9 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _passwordController = TextEditingController();
   AuthenticationService _authenticationService = AuthenticationService();
 
-  bool _obscurePassword = true; 
+  bool _obscurePassword = true;
+
+  final RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +53,8 @@ class _LoginPageState extends State<LoginPage> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Campo obrigatório!';
+                        } else if (!emailRegex.hasMatch(value)) {
+                          return 'Email inválido!';
                         }
                         return null;
                       },
@@ -70,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
                     padding: EdgeInsets.all(12),
                     child: TextFormField(
                       controller: _passwordController,
-                      obscureText: _obscurePassword, 
+                      obscureText: _obscurePassword,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Campo obrigatório!';
