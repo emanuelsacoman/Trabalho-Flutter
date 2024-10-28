@@ -33,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
           Center(
             heightFactor: 5,
             child: Text(
-              'Login',
+              'Catálogo de Receitas',
               textDirection: TextDirection.ltr,
               style: TextStyle(
                 fontSize: 32,
